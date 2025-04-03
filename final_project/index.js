@@ -12,6 +12,20 @@ app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUni
 
 app.use("/customer/auth/*", function auth(req,res,next){
 //Write the authenication mechanism here
+  const { username, password } = req.body;
+  // Simulated user authentication (replace with actual logic)
+  const token = req.headers['authorization'];
+  
+  if (token) {
+   // Verify JWT token
+   jwt.verify(token, "fingerprint_customer", (err, decoded) => {
+     if (err) {
+       res.send('Invalid User');
+     } else {
+        let currentUser= decoded.username;
+        next();
+    }});}
+    res.send('Invalid Credentials');
 });
  
 const PORT =5000;
